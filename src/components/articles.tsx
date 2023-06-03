@@ -7,7 +7,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 //local file
 import { api } from '../common/http-common'
 
-const Pets = () => {
+const Articles = () => {
   const [articles, setArticles] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
   
@@ -47,4 +47,4 @@ const Pets = () => {
     }
   }
 }
-export default Pets
+export default Articles

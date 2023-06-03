@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Pets from './pets'
+import Articles from './articles'
 
 const Home = () => {
-  return <Pets />
+  return <Articles />
 }
 
 export default Home
