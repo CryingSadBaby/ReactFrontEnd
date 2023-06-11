@@ -16,9 +16,7 @@ function Nav(props) {
   <UserContext.Consumer>
    
       {({logout, user}) => (
-
     <>
-     
       <div className="logo" />
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
         <Menu.Item key="1" >Home<Link to="/"></Link></Menu.Item>
@@ -26,7 +24,7 @@ function Nav(props) {
         <Menu.Item key="3" >About<Link to="/about"></Link></Menu.Item> 
         <Menu.Item key="4" >{user.loggedIn&&<Link to="/favpage">My Favorite</Link>}</Menu.Item>
         <Menu.Item key="5" onClick={logout} type="primary"  >{user.loggedIn&&<Link to="/">Logout</Link>}
-        </Menu.Item><Menu.Item key="6" onClick={logout} type="primary"  >{user.loggedIn&&<Link to="/img_Page">UploadImage</Link>}
+        </Menu.Item><Menu.Item key="6" >{user.loggedIn&&<Link to="/img_Page">UploadImage</Link>}
         </Menu.Item>
         </Menu>  
    </>

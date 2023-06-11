@@ -8,6 +8,7 @@ import UserContext from './contexts/user'
 import Nav from './components/Nav'
 import Login from './components/Login'
 import Register from './components/Register'
+import Img_Page from './components/Img_Page'
 
 const { Header, Content, Footer, Button} = Layout
 
@@ -74,6 +75,7 @@ regComplete() {
 				<Routes>
           <Route path="/login"element={<Login />} />
           <Route path="/register"element={<Register/>}/>
+          <Route path="/img_page"element={<Img_Page/>}/>
 				</Routes>			
 				</Content>
 				
