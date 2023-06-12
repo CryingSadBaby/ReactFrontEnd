@@ -11,6 +11,9 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Img_Page from './components/Img_Page'
 import Account from './components/Account'
+import Dashboard from './components/Dashboard'
+import CatDetail from './components/CatDetail'
+import DetailArticle from './components/DetailArticle'
 
 const { Header, Content, Footer, Button} = Layout
 
@@ -80,9 +83,11 @@ regComplete() {
           <Route path="/img_page"element={<Img_Page/>}/>
           <Route path="/account"element={<Account/>}/>
           <Route path="/"element={<Home/>}/>
+          <Route path="/dashboard"element={<Dashboard/>}/>
+          <Route path="/pet/:pid"element={<CatDetail/>}/>
+          <Route path="/article/:id" element={<DetailArticle />} />
 				</Routes>			
 				</Content>
-				
        <Footer>
 					<p style={{ color: 'green' }}>VT6003CEM Demo</p>
 				</Footer>
