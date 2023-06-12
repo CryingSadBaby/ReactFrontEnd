@@ -1,14 +1,16 @@
 import React from 'react'
 import {  Layout,Space } from 'antd'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import {useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 import './App.css'
+import Home from './components/Home'
 import UserContext from './contexts/user'
 import Nav from './components/Nav'
 import Login from './components/Login'
 import Register from './components/Register'
 import Img_Page from './components/Img_Page'
+import Account from './components/Account'
 
 const { Header, Content, Footer, Button} = Layout
 
@@ -76,6 +78,8 @@ regComplete() {
           <Route path="/login"element={<Login />} />
           <Route path="/register"element={<Register/>}/>
           <Route path="/img_page"element={<Img_Page/>}/>
+          <Route path="/account"element={<Account/>}/>
+          <Route path="/"element={<Home/>}/>
 				</Routes>			
 				</Content>
 				
