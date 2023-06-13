@@ -14,6 +14,8 @@ import Account from './components/Account'
 import Dashboard from './components/Dashboard'
 import CatDetail from './components/CatDetail'
 import DetailArticle from './components/DetailArticle'
+import About from './components/About'
+import FavPage from './components/Favpage'
 
 const { Header, Content, Footer, Button} = Layout
 
@@ -86,6 +88,8 @@ regComplete() {
           <Route path="/dashboard"element={<Dashboard/>}/>
           <Route path="/pet/:pid"element={<CatDetail/>}/>
           <Route path="/article/:id" element={<DetailArticle />} />
+          <Route path="/about"element={<About/>}/>
+          <Route path="/favpage"element={<FavPage/>}/>
 				</Routes>			
 				</Content>
        <Footer>

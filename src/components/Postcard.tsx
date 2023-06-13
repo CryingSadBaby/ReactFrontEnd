@@ -117,7 +117,7 @@ onClick()
         ]}>
         <Meta title={this.props.title} description={this.props.summary} />
         <p></p>
-  <Link   to={ `/dashboard/${this.props.id}` }>Details</Link> 
+  <Link   to={ `/article/${this.props.id}` }>Details</Link> 
           <Displaycomment data={this.state.article_comments} 
             isLoggedIn= {this.context.user.loggedIn} role={this.context.user.role}
             msgLink={this.props.links.msg}

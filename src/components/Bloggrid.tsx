@@ -23,7 +23,7 @@ class BlogGrid extends React.Component {
   }
   render() {
     if (!this.state.posts.length) {
-      return <h3>Loading posts...</h3>
+      return <h3>There is no articles...</h3>
     }
     const cardList = this.state.posts.map(post => {
       return (

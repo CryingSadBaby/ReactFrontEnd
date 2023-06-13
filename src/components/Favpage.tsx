@@ -1,12 +1,13 @@
+import React from 'react'
 import '../App.css'
-import BlogGrid from './Bloggrid'
+import FavGrid from './Favgrid'
 
-function Home() {
+function FavPage() {
   return (
     <> 
     <h2 style={{ color: 'green' }}> Welcome to front end client Demo</h2>     
-      <BlogGrid />
+      <FavGrid />
     </>
   )
 }
-export default Home
+export default FavPage
