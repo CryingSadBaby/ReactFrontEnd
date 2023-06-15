@@ -18,28 +18,37 @@ const ageRule = [
 function PostCatForm(props){
   const user = useContext(UserContext)
 
-  function postcat(values){
-  console.log(`Received values of form: ${values}`)
-  console.log(`JSON: ${JSON.stringify(values)}`)
-  fetch(`${api.uri}/pets`,{
-    method: "POST",
-    body: JSON.stringify(values)
-  })
-  .then(status)
-  .then(json)
-  .then(data=>{
-    console.log(data)
-    alert(`Post success!`)
-  })
-  .catch(err=>{
-    console.log(err)
-    alert(`Error: ${err}`)
-  })
+  const postcat = (values) =>{
+    const {token,...data} = values
+    console.log(`JSON: ${JSON.stringify(data)}`)
+    fetch(`${api.uri}/pets`,{
+      method: "POST",
+      headers: {
+        "Authorization": `Basic ${values.token}`,
+        "Content-Type": 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(status)
+    .then(json)
+    .then(data=>{
+      console.log(data)
+      alert("Post success")
+    })
+    .catch(error=>{
+      console.error(error)
+      alert(`Error: ${error}`)
+    })
   }
+
   return(
     <UserContext.Consumer>
-      {({logout,user})=>(
-      <Form name="postcat" scrollToFirstError onFinish={postcat}>
+      {({user}) => (
+      <Form name="postpet" scrollToFirstError onFinish={postcat}>
+        <Form.Item name="token" hidden={true} initialValue={user.token}>
+        </Form.Item>
+        <Form.Item name="userid" hidden={true} initialValue={user.id}>
+        </Form.Item>
         <Form.Item name="petname" label="Cat name" rules={inputRule}>
           <Input/>
         </Form.Item>
@@ -66,10 +75,12 @@ function PostCatForm(props){
         <Form.Item>
           <Button type="primary" htmlType="submit">Post</Button>
         </Form.Item>
+        
       </Form>
       )}
     </UserContext.Consumer>
   )
+  
 }
 
 export default PostCatForm
