@@ -1,38 +1,35 @@
-import { Menu } from 'antd'
-import { Link } from "react-router-dom"
+import {Menu,Layout} from 'antd'
+import {Link} from 'react-router-dom'
+import React, { useContext, useState, useEffect } from 'react'
+
 import UserContext from '../contexts/user'
-import React, {  useContext, useState, useEffect } from 'react'
 
+const {Content} = Layout
 
+function Nav(props){
+  const logout = useContext(UserContext)
 
-/**
- * Renders a <Nav /> component for the navigation menu.
- * @params props
- */
-function Nav(props) {
-		const logout = useContext(UserContext)
-  return (  
-    
-  <UserContext.Consumer>
-   
+  return(
+    <UserContext.Consumer>
       {({logout, user}) => (
-    <>
-      <div className="logo" />
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-        <Menu.Item key="1" >Home<Link to="/"></Link></Menu.Item>
-        <Menu.Item key="2" >Dashboard<Link to="/dashboard"></Link></Menu.Item>
-        <Menu.Item key="3" >About<Link to="/about"></Link></Menu.Item> 
-        <Menu.Item key="4" >{user.loggedIn&&<Link to="/favpage">My Favorite</Link>}</Menu.Item>
-        <Menu.Item key="5" onClick={logout} type="primary"  >{user.loggedIn&&<Link to="/">Logout</Link>}
-        </Menu.Item><Menu.Item key="6" >{user.loggedIn&&<Link to="/img_Page">UploadImage</Link>}
-        </Menu.Item>
-        </Menu>  
-   </>
+      <main>
+        <div className="logo"/>
+        <Content>
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['0']}>
+            <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
+            <Menu.Item key="2"><Link to="/about">About</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/about">Search Cats</Link></Menu.Item>
+            <Menu.Item key="4" onClick={logout}>{user.logged&&<Link to="/">Logout</Link>}</Menu.Item>
+            <Menu.Item key="5">{!user.logged&&<Link to="/login">Login</Link>}</Menu.Item>
+            <Menu.Item key="6">{!user.logged&&<Link to="/register">Register</Link>}</Menu.Item>
+            <Menu.Item key="7">{user.logged&&<Link to="/profile">Profile</Link>}</Menu.Item>
+            <Menu.Item key="8">{user.logged&&<Link to="/postcat">Post Cat</Link>}</Menu.Item>
+          </Menu>
+        </Content>
+      </main>
       )}
-</UserContext.Consumer>
-
+    </UserContext.Consumer>
   )
-
 }
 
 export default Nav

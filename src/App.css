@@ -1,5 +1,11 @@
-main {
-  text-align: center;
-  vertical-align: center;
-  line-height: 10vh
+.Profile {
+  color: #fff;
+}
+
+.Profile th {
+  padding:20px;
+}
+
+.Profile td {
+  padding:20px;
 }

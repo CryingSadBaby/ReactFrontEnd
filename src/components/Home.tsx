@@ -1,12 +1,12 @@
-import '../App.css'
-import BlogGrid from './Bloggrid'
+import Cats from './Cats'
 
-function Home() {
-  return (
-    <> 
-    <h2 style={{ color: 'green' }}> Welcome to front end client Demo</h2>     
-      <BlogGrid />
-    </>
+function Home(){
+  return(
+    <main>
+      <h2>Welcome to Pet Shelter Client</h2>
+      <Cats/>
+    </main>
   )
 }
+
 export default Home

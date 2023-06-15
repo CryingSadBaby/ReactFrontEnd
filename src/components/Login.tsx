@@ -1,16 +1,12 @@
-import React from 'react';
-import LoginForm from'./LoginForm'
+import LoginForm from './LoginForm'
 
-
-function Login() {
-
-  return (
-    <> 
-    <h2 style={{ color: 'green' }}> Welcome to Blog User Login</h2>     
-     
-      <LoginForm />
-     
-    </>
+function Login(){
+  return(
+    <main>
+      <h2>Login to Pet Shelter Client</h2>
+      <LoginForm/>
+    </main>
   )
 }
+
 export default Login

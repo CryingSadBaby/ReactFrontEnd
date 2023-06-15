@@ -1,16 +1,12 @@
-import React from 'react'
-import RegistrationForm from './RegisterForm'
+import RegisterForm from './RegisterForm'
 
-function Register() {
-  
-  
-  return (
-    <> 
-    <h2 style={{ color: 'green' }}> Welcome to Blog User Registration</h2>     
-     
-      <RegistrationForm />
-    </>
+function Register(){
+  return(
+    <main>
+      <h2>Register to pet shelter client</h2>
+      <RegisterForm/>
+    </main>
   )
 }
 
-export default Register;
+export default Register

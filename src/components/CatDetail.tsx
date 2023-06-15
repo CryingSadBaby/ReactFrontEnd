@@ -1,62 +1,56 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Button, Spin } from 'antd'
-import axios from 'axios'
-import { LoadingOutlined, RollbackOutlined } from '@ant-design/icons'
+import React, {useEffect} from 'react'
+import {useParams, useNavigate} from 'react-router-dom'
+import {Button, Spin} from 'antd'
+import {RollbackOutlined, LoadingOutlined} from '@ant-design/icons'
 
-//local file
-import { api } from '../utilities/common_api'
+import {status,json} from '../resources/requestHandlers'
+import {api} from '../resources/myapi'
 
-const CatDetail = () => {
-  const [cat, setCat] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const { pid } = useParams()
+function CatDetail(props){
+  const id = useParams()
   const navigate = useNavigate()
-  let catgender = ""
-  let neutered = ""
-
+  const [cat, setCat] = React.useState('')
+  const [loading, setLoading] = React.useState(true)
   useEffect(()=>{
-    axios.get(`${api.uri}/pets/${pid}`)
-      .then((res)=>{
-        setCat(res.data)
-      })
-      .then(()=>{
-        setLoading(false)
-      })
-  }, [])
-  if(loading){
-    const loadingIcon = <LoadingOutlined style={{fontSize: 48}} spin />
-    return(<Spin indicator={loadingIcon}/>)
-  } else {
-    if(!cat){
-      return(<div>Page does not exist</div>)
-    } else {
-      if(!cat.gender){
-        catgender = "boy"
-      } else {
-        catgender = "girl"
-      }
-      if(!cat.neutered){
-        neutered = "False"
-      } else {
-        neutered = "True"
-      }
+    fetch(`${api.uri}/pets/${id.pid}`)
+    .then(status)
+    .then(json)
+    .then(data=>{
+      console.log(`Data: ${data}`)
+      setCat(data)
+      setLoading(false)
+    })
+  })
+  if(id==undefined){
+    return(
+      <main>
+        <h1>The Cat detail</h1>
+        <h2>Nothing to show yet...</h2>
+        <Button type="primary" icon={<RollbackOutlined/>} onClick={()=>navigate(-1)}/>
+      </main>
+    )
+  }else{
+    if(loading){
+      const antIcon = <LoadingOutlined style={{fontSize: 48}} spin/>
+      return(<Spin indicator={antIcon}/>)
+    }else{
+      console.log(cat.petname)
       return(
-        <div>
-          <h1>Name: {cat.petname}</h1>
-          <img src={cat.imageurl} width="500" />
-          <p>Age: {cat.age}</p>
-          <p>Breed: {cat.breed}</p>
-          <p>Gender: {catgender}</p>
-          <p>Description: {cat.des}</p>
-          <p>Neutered: {neutered}</p>
-          <Button type="primary" icon={<RollbackOutlined />} onClick={()=>navigate(-1)}/>
-        </div>
+        <main>
+          <h1>{cat.petname}</h1>
+          <img src={cat.imageurl} alt={id} width="600"/>
+          <h3>{cat.des}</h3>
+          <h3>{cat.breed}</h3>
+          <h3>{cat.age}</h3>
+          {!cat.gender&&<h3>Gender: female</h3>}
+          {cat.gender&&<h3>Gender: male</h3>}
+          {!cat.neutered&&<h3>Neutered: No</h3>}
+          {cat.neutered&&<h3>Neutered: Yes</h3>}
+          <Button type="primary" icon={<RollbackOutlined/>} onClick={()=>navigate(-1)}/>
+        </main>
       )
     }
   }
-  
-  
 }
 
 export default CatDetail
