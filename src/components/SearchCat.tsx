@@ -8,6 +8,7 @@ import {status, json} from '../resources/requestHandlers'
 
 function SearchCat(){
   const [searching, setSearching] = React.useState(false)
+  const [searchComp, setSearchComp] = React.useState(false)
   const [cats, setCat] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
   
@@ -27,6 +28,8 @@ function SearchCat(){
       console.log(res)
       setCat(res)
       setLoading(false)
+      setSearching(false)
+      setSearchComp(true)
     })
     .catch(err=>{
       console.log(err)
@@ -34,7 +37,7 @@ function SearchCat(){
   }
 
   const CatResult = () => {
-    if(searching){
+    if(searchComp){
       if(loading){
         const antIcon = <LoadingOutlined style={{fontSize: 48}} spin />
         return(<Spin indicator={antIcon}/>)
@@ -87,10 +90,11 @@ function SearchCat(){
           <Input/>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">Search</Button>
+          {!searching&&<Button type="primary" htmlType="submit">Search</Button>}
+          {searching&&<Button type="primary" htmlType="submit" disabled>Search</Button>}
         </Form.Item>
       </Form>
-      {searching&&<CatResult/>}
+      {searchComp&&<CatResult/>}
     </main>
   )
 }
