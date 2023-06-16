@@ -1,16 +1,23 @@
+//Library
 import React, {useEffect} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import {Button, Spin} from 'antd'
 import {RollbackOutlined, LoadingOutlined} from '@ant-design/icons'
 
+//Local
 import {status,json} from '../resources/requestHandlers'
 import {api} from '../resources/myapi'
 
+//Main component
 function CatDetail(props){
+  //get item id
   const id = useParams()
+  //for redirect back to last page
   const navigate = useNavigate()
+  //init react state
   const [cat, setCat] = React.useState('')
   const [loading, setLoading] = React.useState(true)
+  //init fetch data from api
   useEffect(()=>{
     fetch(`${api.uri}/pets/${id.pid}`)
     .then(status)
@@ -21,7 +28,7 @@ function CatDetail(props){
       setLoading(false)
     })
   },[])
-  
+  //if id is not defined, show no cats to show yet text
   if(id==undefined){
     return(
       <main>
@@ -31,11 +38,12 @@ function CatDetail(props){
       </main>
     )
   }else{
+    //if react state is loading, show spining circle
     if(loading){
       const antIcon = <LoadingOutlined style={{fontSize: 48}} spin/>
       return(<Spin indicator={antIcon}/>)
     }else{
-      console.log(cat.petname)
+      //show cat data
       return(
         <main>
           <h1>{cat.petname}</h1>

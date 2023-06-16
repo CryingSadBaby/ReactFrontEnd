@@ -1,24 +1,30 @@
+//Library
 import React from 'react'
 import {Form, Input, Button} from 'antd'
 
-
+//Local
 import {status,json} from '../resources/requestHandlers'
 import {api} from '../resources/myapi'
 import UserContext from '../contexts/user'
 
+//Email input rule
 const emailRule = [
   {type: 'email', message: 'The Input is not a valid E-mail address'},
   {required: true, message: 'Please input your E-mail address'}
 ]
 
+//Username input Rule
 const usernameRule = [
   {required: true, message: 'Please input your username'}
 ]
 
+//Password input rule
 const passwordRule = [
   {required: true, message: 'Please input your password'}
 ]
 
+
+//Confirm password input rule
 const confirmPasswordRule = [
   {required: true, message: 'Please confirm your password'},
   ({getFieldValue}) => ({
@@ -31,6 +37,7 @@ const confirmPasswordRule = [
   })
 ]
 
+//Main component
 class RegisterForm extends React.Component {
   constructor(props){
     super(props)
@@ -40,7 +47,8 @@ class RegisterForm extends React.Component {
     this.onFinish = this.onFinish.bind(this)
   }
   static contextType = UserContext
-
+  
+  //On finish function for post data to api and register user
   onFinish = (values) => {
     console.log('Received values of form: ', values)
     const {confirm,...data} = values
@@ -64,7 +72,9 @@ class RegisterForm extends React.Component {
     })
   }
 
+  //Show main component
   render(){
+    //if client register state is registered then show notification text as main component
     if(this.context.user.reged==true){
       return(
         <div>
@@ -72,6 +82,7 @@ class RegisterForm extends React.Component {
         </div>
       )
     }else{
+      //if client register state is not registered then show input form as main component
       return(
         <Form name="register" scrollToFirstError onFinish={this.onFinish}>
           <Form.Item name="email" label="E-mail" rules={emailRule}>
@@ -98,4 +109,5 @@ class RegisterForm extends React.Component {
   }
 }
 
+//export component
 export default RegisterForm

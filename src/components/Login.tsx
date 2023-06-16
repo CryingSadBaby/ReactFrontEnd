@@ -1,5 +1,7 @@
+//Local
 import LoginForm from './LoginForm'
 
+//Main component
 function Login(){
   return(
     <main>
@@ -9,4 +11,5 @@ function Login(){
   )
 }
 
+//Export main component
 export default Login

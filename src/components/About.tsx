@@ -1,3 +1,4 @@
+//Main component
 function About(){
   return(
     <main>
@@ -6,4 +7,5 @@ function About(){
   )
 }
 
+//Export main component
 export default About

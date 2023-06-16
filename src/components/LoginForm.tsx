@@ -1,18 +1,23 @@
+//Library
 import React from 'react'
 import {Form, Input, Button} from 'antd'
 
+//Local
 import {api} from '../resources/myapi'
 import {status, json} from '../resources/requestHandlers'
 import UserContext from '../contexts/user'
 
+//Password input rule
 const passwordRule = [
   { required: true, message: 'Please enter your password'}
 ]
 
+//Username input rule
 const usernameRule = [
   { required: true, message: 'Please enter your username'}
 ]
 
+//Main component
 class LoginForm extends React.Component {
   constructor(props){
     super(props)
@@ -70,5 +75,5 @@ class LoginForm extends React.Component {
   }
 }
 
-
+//Export main component
 export default LoginForm

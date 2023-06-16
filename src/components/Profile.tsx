@@ -1,5 +1,7 @@
+//Local
 import ProfileGrid from './ProfileGrid'
 
+//Main component
 function Profile(){
   return(
     <main>
@@ -9,4 +11,5 @@ function Profile(){
   )
 }
 
+//Export main component
 export default Profile

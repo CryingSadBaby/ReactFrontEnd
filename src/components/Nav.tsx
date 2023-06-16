@@ -1,14 +1,17 @@
+//Library
 import {Menu,Layout} from 'antd'
 import {Link} from 'react-router-dom'
 import React, { useContext, useState, useEffect } from 'react'
 
+//Local
 import UserContext from '../contexts/user'
 
 const {Content} = Layout
 
+//Main component
 function Nav(props){
   const logout = useContext(UserContext)
-
+  //Show main component
   return(
     <UserContext.Consumer>
       {({logout, user}) => (
@@ -32,4 +35,5 @@ function Nav(props){
   )
 }
 
+//Export main component
 export default Nav

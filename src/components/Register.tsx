@@ -1,5 +1,7 @@
+//Local
 import RegisterForm from './RegisterForm'
 
+//Main component
 function Register(){
   return(
     <main>
@@ -9,4 +11,5 @@ function Register(){
   )
 }
 
+//Export component
 export default Register

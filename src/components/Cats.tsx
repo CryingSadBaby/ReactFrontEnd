@@ -1,14 +1,20 @@
+//Library
 import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {Card, Col, Row, Spin} from 'antd'
 import {RollbackOutlined,LoadingOutlined} from '@ant-design/icons'
+
+//Local
 import {api} from '../resources/myapi'
 import {status, json} from '../resources/requestHandlers'
 
+//Main component
 function Cats(){
+  //init react state
   const [cats, setCat] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
-  
+
+  //init fetch api data
   useEffect(()=>{
     fetch(`${api.uri}/pets`)
     .then(status)
@@ -20,10 +26,12 @@ function Cats(){
     })
   },[])
 
+  //If react state loading, show spining circle
   if(loading){
     const antIcon = <LoadingOutlined style={{fontSize: 48}} spin />
     return(<Spin indicator={antIcon}/>)
   }else{
+    //Show cats information by Card
     return(
       <Row>
         {

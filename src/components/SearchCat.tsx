@@ -1,21 +1,24 @@
+//Library
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Form, Select, Input, InputNumber, Button, Row, Col, Card, Spin} from 'antd'
 import {LoadingOutlined} from '@ant-design/icons'
 
+//Local
 import {api} from '../resources/myapi'
 import {status, json} from '../resources/requestHandlers'
 
-
+//Basic input rule
 const inputRule = [
   {required: false, message:'Please input keywords'}
 ]
-
+//Input rule of age
 const ageRule = [
   {required: false, message:'Please input age'},
   {type: 'number',min: 1, max: 99, message:'Please input valid age'}
 ]
 
+//Main component
 function SearchCat(){
   const [searching, setSearching] = React.useState(false)
   const [searchComp, setSearchComp] = React.useState(false)
@@ -38,6 +41,7 @@ function SearchCat(){
     }
   }
   
+  //search cats from api database
   const search = (values) => {
     const data = {[values.key]:values.value}
     setSearching(true)
@@ -63,7 +67,8 @@ function SearchCat(){
       setSearching(false)
     })
   }
-
+  
+  //Show cats search result
   const CatResult = () => {
     if(searchComp){
       if(loading){
@@ -104,7 +109,7 @@ function SearchCat(){
       }
     }
   }
-
+  //Show main component
   return(
     <main>
       <Form form={form} onFinish={search}>
@@ -153,4 +158,5 @@ function SearchCat(){
   )
 }
 
+//Export component
 export default SearchCat

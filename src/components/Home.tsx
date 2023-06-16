@@ -1,5 +1,7 @@
+//Local
 import Cats from './Cats'
 
+//Main component
 function Home(){
   return(
     <main>
@@ -9,4 +11,5 @@ function Home(){
   )
 }
 
+//Export main component
 export default Home

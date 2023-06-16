@@ -1,24 +1,31 @@
+//Library
 import React, { useContext } from 'react'
 import {Form,Input,Button,Select,InputNumber} from 'antd'
 
+//Local
 import UserContext from '../contexts/user'
 import {status,json} from '../resources/requestHandlers'
 import {api} from '../resources/myapi'
 
-
+//Basic input rule
 const inputRule = [
   {required: true, message:"Please Input information"}
 ]
 
+//Age input rule
 const ageRule = [
   {required: true, message:"Please Input a valid age"},
   {type: 'number', min: 1, max: 99}
 ]
 
+//Main component
 function PostCatForm(props){
+  //Get UserContext as user
   const user = useContext(UserContext)
 
+  //Post cat function
   const postcat = (values) =>{
+    //ignore token in values as data
     const {token,...data} = values
     console.log(`JSON: ${JSON.stringify(data)}`)
     fetch(`${api.uri}/pets`,{
@@ -41,6 +48,7 @@ function PostCatForm(props){
     })
   }
 
+  //Show main component
   return(
     <UserContext.Consumer>
       {({user}) => (
@@ -80,7 +88,7 @@ function PostCatForm(props){
       )}
     </UserContext.Consumer>
   )
-  
 }
 
+//Export main component
 export default PostCatForm

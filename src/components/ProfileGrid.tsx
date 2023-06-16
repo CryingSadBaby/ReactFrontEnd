@@ -1,12 +1,16 @@
+//Library
 import React, {useContext} from 'react'
 import {Row, Col, Space, Avatar, Image} from 'antd'
 import {UserOutlined} from '@ant-design/icons'
 
-
+//Local
 import UserContext from '../contexts/user'
 
+//Main component
 function ProfileGrid(props){
+  //Get UserContext as user
   const user = useContext(UserContext)
+  //Show main component
   return(
     <UserContext.Consumer>
       {({logout, user}) => (
@@ -53,4 +57,5 @@ function ProfileGrid(props){
   )
 }
 
+//Export main component
 export default ProfileGrid
