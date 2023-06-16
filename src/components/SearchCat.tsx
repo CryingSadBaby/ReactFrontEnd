@@ -8,7 +8,12 @@ import {status, json} from '../resources/requestHandlers'
 
 
 const inputRule = [
-  {required: true, message:'Please input keywords'}
+  {required: false, message:'Please input keywords'}
+]
+
+const ageRule = [
+  {required: false, message:'Please input age'},
+  {type: 'number',min: 1, max: 99, message:'Please input valid age'}
 ]
 
 function SearchCat(){
@@ -113,21 +118,31 @@ function SearchCat(){
             {value:'age', label: 'Age'}
           ]} onChange={change} />
         </Form.Item>
-        <Form.Item name="value" label="Keywords" rules={inputRule}>
-          {input==="text"?(<Input />):
-          input==="number"?(<InputNumber/>):
+          {input==="text"?(
+      <Form.Item name="value" label="Keywords" rules={inputRule}>
+        <Input />
+      </Form.Item>):
+          input==="number"?(
+            <Form.Item name="value" label="Keywords" rules={ageRule}>
+              <InputNumber />
+            </Form.Item>):
           input==="gender"?(
-            <Select 
-              options={
-              [{value: false, label: 'female'},
-               {value: true, label: 'male'}]}/>):
+            <Form.Item name="value" label="Keywords" rules={inputRule} initialvalue={false}>
+              <Select 
+                defaultValue={false}
+                options={
+                [{value: false, label: 'female'},
+                {value: true, label: 'male'}]}/>
+            </Form.Item>):
           input==="neutered"?(
-            <Select 
-              options={
-              [{value: false, label: 'No'},
-               {value: true, label: 'Yes'}]}/>
+            <Form.Item name="value" label="Keywords" rules={inputRule} initialvalue={false}>
+              <Select 
+                defaultValue={false}
+                options={
+                [{value: false, label: 'No'},
+                {value: true, label: 'Yes'}]}/>
+            </Form.Item>
           ):null}
-        </Form.Item>
         <Form.Item>
           {!searching&&<Button type="primary" htmlType="submit">Search</Button>}
           {searching&&<Button type="primary" htmlType="submit" disabled>Search</Button>}
