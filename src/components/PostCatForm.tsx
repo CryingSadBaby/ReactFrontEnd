@@ -55,15 +55,15 @@ function PostCatForm(props){
         <Form.Item name="breed" label="Cat breed" rules={inputRule}>
           <Input/>
         </Form.Item>
-        <Form.Item name="gender" label="Cat gender" rules={inputRule}>
-          <Select defaultValue='false' options={
+        <Form.Item name="gender" label="Cat gender" rules={inputRule} initialValue={false}>
+          <Select options={
           [{value: false, label: 'female'},{value: true, label: 'male'}]}/>
         </Form.Item>
         <Form.Item name="age" label="Cat age" rules={ageRule}>
           <InputNumber/>
         </Form.Item>
-        <Form.Item name="neutered" label="Neutered state" rules={inputRule}>
-          <Select defaultValue='false' options={
+        <Form.Item name="neutered" label="Neutered state" rules={inputRule} initialValue={false}>
+          <Select options={
           [{value: false, label: 'No'},{value: true, label: 'Yes'}]}/>
         </Form.Item>
         <Form.Item name="imageurl" label="Image link">

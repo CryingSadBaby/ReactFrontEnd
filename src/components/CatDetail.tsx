@@ -20,7 +20,8 @@ function CatDetail(props){
       setCat(data)
       setLoading(false)
     })
-  })
+  },[])
+  
   if(id==undefined){
     return(
       <main>
@@ -46,6 +47,7 @@ function CatDetail(props){
           {cat.gender&&<h3>Gender: male</h3>}
           {!cat.neutered&&<h3>Neutered: No</h3>}
           {cat.neutered&&<h3>Neutered: Yes</h3>}
+          <h3>Poster id: {cat.userid}</h3>
           <Button type="primary" icon={<RollbackOutlined/>} onClick={()=>navigate(-1)}/>
         </main>
       )

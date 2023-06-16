@@ -8,7 +8,7 @@ import {status, json} from '../resources/requestHandlers'
 function Cats(){
   const [cats, setCat] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
-
+  
   useEffect(()=>{
     fetch(`${api.uri}/pets`)
     .then(status)
@@ -18,7 +18,7 @@ function Cats(){
       setCat(data)
       setLoading(false)
     })
-  })
+  },[])
 
   if(loading){
     const antIcon = <LoadingOutlined style={{fontSize: 48}} spin />

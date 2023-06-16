@@ -13,6 +13,7 @@ import Register from './components/Register'
 import Profile from './components/Profile'
 import PostCat from './components/PostCat'
 import CatDetail from './components/CatDetail'
+import SearchCat from './components/SearchCat'
 
 import 'antd/dist/reset.css'
 import './App.css'
@@ -69,6 +70,7 @@ class App extends React.Component {
                   <Route path="/profile" element={<Profile/>}/>
                   <Route path="/postcat" element={<PostCat/>}/>
                   <Route path="/cat/:pid" element={<CatDetail/>}/>
+                  <Route path="/search" element={<SearchCat/>}/>
                 </Routes>
               </Content>
               <Footer>
