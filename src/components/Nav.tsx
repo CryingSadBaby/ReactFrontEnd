@@ -22,11 +22,12 @@ function Nav(props){
             <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
             <Menu.Item key="2"><Link to="/about">About</Link></Menu.Item>
             <Menu.Item key="3"><Link to="/search">Search Cats</Link></Menu.Item>
-            <Menu.Item key="4" onClick={logout}>{user.logged&&<Link to="/">Logout</Link>}</Menu.Item>
-            <Menu.Item key="5">{!user.logged&&<Link to="/login">Login</Link>}</Menu.Item>
-            <Menu.Item key="6">{!user.logged&&<Link to="/register">Register</Link>}</Menu.Item>
-            <Menu.Item key="7">{user.logged&&<Link to="/profile">Profile</Link>}</Menu.Item>
-            <Menu.Item key="8">{user.logged&&<Link to="/postcat">Post Cat</Link>}</Menu.Item>
+            {user.logged&&<Menu.Item key="4" onClick={logout}><Link to="/">Logout</Link></Menu.Item>}
+            {!user.logged&&<Menu.Item key="4"><Link to="/login">Login</Link></Menu.Item>}
+            {!user.logged&&<Menu.Item key="5"><Link to="/register">Register</Link></Menu.Item>}
+            {user.logged&&<Menu.Item key="6"><Link to="/profile">Profile</Link></Menu.Item>}
+            {user.logged&&<Menu.Item key="7"><Link to="/fav">Favorites</Link></Menu.Item>}
+            {user.logged&&user.role==='staff'?(<Menu.Item key="8"><Link to="/postcat">Post Cat</Link></Menu.Item>):null}
           </Menu>
         </Content>
       </main>

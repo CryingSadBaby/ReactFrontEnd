@@ -1,9 +1,11 @@
+//Library
 import React from 'react'
 import {Layout, Space} from 'antd'
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 
 const {Header, Content, Footer, Button} = Layout
 
+//Local
 import UserContext from './contexts/user'
 import Nav from './components/Nav'
 import Home from './components/Home'
@@ -14,10 +16,13 @@ import Profile from './components/Profile'
 import PostCat from './components/PostCat'
 import CatDetail from './components/CatDetail'
 import SearchCat from './components/SearchCat'
+import FavPage from './components/FavPage'
 
+//Style
 import 'antd/dist/reset.css'
 import './App.css'
 
+//Main component
 class App extends React.Component {
   constructor(props){
     super(props)
@@ -28,6 +33,7 @@ class App extends React.Component {
     this.logout = this.logout.bind(this)
     this.reged = this.reged.bind(this)
   }
+  
   //State context setting
   login(user){
     console.log("setting context")
@@ -53,6 +59,7 @@ class App extends React.Component {
       reged: this.reged
     }
 
+    //Show main component
     return(
       <main>
         <Layout className="layout">
@@ -71,6 +78,7 @@ class App extends React.Component {
                   <Route path="/postcat" element={<PostCat/>}/>
                   <Route path="/cat/:pid" element={<CatDetail/>}/>
                   <Route path="/search" element={<SearchCat/>}/>
+                  <Route path="/fav" element={<FavPage/>}/>
                 </Routes>
               </Content>
               <Footer>
@@ -84,4 +92,5 @@ class App extends React.Component {
   }
 }
 
+//Export main component
 export default App
