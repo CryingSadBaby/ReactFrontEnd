@@ -16,11 +16,11 @@ function Cats(){
   const [loading, setLoading] = useState(true)
   const [favlist, setFavlist] = useState([])
 
-
   const user = useContext(UserContext)
 
   //init fetch api data
   useEffect(()=>{
+    //logged in fetch to get all cats and user favs
     const loggedfetch = async() => {
       await fetch(`${api.uri}/pets`)
     .then(status)
@@ -37,14 +37,19 @@ function Cats(){
     .then(status)
     .then(json)
     .then(res=>{
-      for(let i=0;i<res.length;i++){
+      if(res.length){
+        for(let i=0;i<res.length;i++){
         favlist.push(res[i].id)
+        }
+        setFavlist(favlist)
+        setLoading(false)
+      } else {
+        setLoading(false)
       }
-      setFavlist(favlist)
-      setLoading(false)
     })
       
     }
+    //Normal fetch to get all cats
     const normalfetch = async() => {
       await fetch(`${api.uri}/pets`)
     .then(status)
@@ -56,8 +61,10 @@ function Cats(){
       
     }
     if(user.user.logged){
+      //Run login fetch when user logged in
       loggedfetch()
     }else{
+      //Run normal fetch when user not logged in
       normalfetch()
     }
   },[])
@@ -73,6 +80,23 @@ function Cats(){
     .then(json)
     .then(res=>{
       alert(`You favorited cats with name: ${catname}`)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
+
+  const rmfav = (id: Number, catname: String) => {
+    fetch(`${api.uri}/fav/${id}`,{
+      method: "DELETE",
+      headers: {
+        "Authorization": `Basic ${user.user.token}`
+      }
+    })
+    .then(status)
+    .then(json)
+    .then(res=>{
+      alert(`You remove favorited with name: ${catname}`)
     })
     .catch(err=>{
       console.log(err)
@@ -99,9 +123,9 @@ function Cats(){
                 hoverable
                 actions={
                   user.logged&&favlist.includes(id)&&userid===user.id?
-                  ([<HeartFilled key="fav" onClick={()=>{fav(id,petname)}}/>,<Link to={`/update/${id}`}><EditOutlined key="edit"/></Link>]):
+                  ([<HeartFilled key="fav" onClick={()=>{rmfav(id,petname)}}/>,<Link to={`/update/${id}`}><EditOutlined key="edit"/></Link>]):
                   user.logged&&!favlist.includes(id)&&userid===user.id?([<HeartOutlined key="fav" onClick={()=>{fav(id,petname)}}/>,<Link to={`/update/${id}`}><EditOutlined key="edit"/></Link>]):
-                user.logged&&!favlist.includes(id)?([<HeartOutlined key="fav" onClick={()=>{fav(id,petname)}}/>]):user.logged&&favlist.includes(id)&&[<HeartFilled key="fav" onClick={()=>{fav(id,petname)}}/>]}>
+                user.logged&&!favlist.includes(id)?([<HeartOutlined key="fav" onClick={()=>{fav(id,petname)}}/>]):user.logged&&favlist.includes(id)&&[<HeartFilled key="fav" onClick={()=>{rmfav(id,petname)}}/>]}>
                 <h3>{petname}</h3>
                 <p>{des}</p>
                 <p>Breed: {breed}</p>

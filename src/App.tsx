@@ -17,6 +17,7 @@ import PostCat from './components/PostCat'
 import CatDetail from './components/CatDetail'
 import SearchCat from './components/SearchCat'
 import FavPage from './components/FavPage'
+import UpdateCat from './components/UpdateCat'
 
 //Style
 import 'antd/dist/reset.css'
@@ -79,6 +80,7 @@ class App extends React.Component {
                   <Route path="/cat/:pid" element={<CatDetail/>}/>
                   <Route path="/search" element={<SearchCat/>}/>
                   <Route path="/fav" element={<FavPage/>}/>
+                  <Route path="/update/:pid" element={<UpdateCat/>}/>
                 </Routes>
               </Content>
               <Footer>
