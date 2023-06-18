@@ -196,44 +196,7 @@ function SearchCat(){
         }else{return(<h1>There is no matched cats</h1>)}
       }
     }
-    // if(searchComp){
-    //   if(loading){
-    //     const antIcon = <LoadingOutlined style={{fontSize: 48}} spin />
-    //     return(<Spin indicator={antIcon}/>)
-    //   }else{
-    //     if(!error){
-    //       return(
-    //         <Row>
-    //           {
-    //             cats&&cats.map((
-    //               {id,petname,des,breed,age,gender,neutered,imageurl}
-    //             )=>(
-    //               <Col span={8}>
-    //                 <Card 
-    //                   key={id} 
-    //                   cover={<img src={imageurl} alt={id}/>}
-    //                   style={{width: 300, color:'purple'}}
-    //                   hoverable>
-    //                   <h3>{petname}</h3>
-    //                   <p>{des}</p>
-    //                   <p>Breed: {breed}</p>
-    //                   <p>Age: {age}</p>
-    //                   {!gender&&<p>Gender: female</p>}
-    //                   {gender&&<p>Gender: male</p>}
-    //                   {!neutered&&<p>Neutered: No</p>}
-    //                   {neutered&&<p>Neutered: Yes</p>}
-    //                   <Link to={ `/cat/${id}` }>Details</Link>
-    //                 </Card>
-    //               </Col>
-    //             ))
-    //           }
-    //         </Row>
-    //       )
-    //     } else {
-    //       return(<h1>There is no result</h1>)
-    //     }
-    //   }
-    // }
+    
   }
   //Show main component
   return(
