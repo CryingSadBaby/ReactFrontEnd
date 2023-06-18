@@ -1,6 +1,6 @@
 //Library
 import {useContext,useEffect,useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {LoadingOutlined,HeartOutlined,HeartFilled} from '@ant-design/icons'
 import {Card, Col, Row, Spin} from 'antd'
 
@@ -14,10 +14,28 @@ function FavGrid(){
   const [cats, setCat] = useState(null)
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState(false)
-  
+
+  const navigate = useNavigate()
   const user = useContext(UserContext)
-  const id = user.user.id
   const token = user.user.token
+
+  const rmfav = (id: Number, catname: String) => {
+    fetch(`${api.uri}/fav/${id}`,{
+      method: "DELETE",
+      headers: {
+        "Authorization": `Basic ${token}`
+      }
+    })
+    .then(status)
+    .then(json)
+    .then(res=>{
+      alert(`You remove favorited with name: ${catname}`)
+      navigate('/')
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
 
   useEffect(()=>{
     fetch(`${api.uri}/fav`,{
@@ -58,7 +76,7 @@ function FavGrid(){
                 style={{width: 300, color:'purple'}}
                 hoverable
                 actions={[
-                  <HeartFilled key='fav'/>
+                  <HeartFilled key='fav'onClick={()=>{rmfav(id,petname)}}/>
                 ]}>
                 <h3>{petname}</h3>
                 <p>{des}</p>
