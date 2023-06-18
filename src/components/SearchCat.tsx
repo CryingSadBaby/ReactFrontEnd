@@ -1,12 +1,13 @@
 //Library
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Form, Select, Input, InputNumber, Button, Row, Col, Card, Spin} from 'antd'
-import {LoadingOutlined} from '@ant-design/icons'
+import {LoadingOutlined,EditOutlined,HeartFilled,HeartOutlined} from '@ant-design/icons'
 
 //Local
 import {api} from '../resources/myapi'
 import {status, json} from '../resources/requestHandlers'
+import UserContext from '../contexts/user'
 
 //Basic input rule
 const inputRule = [
@@ -20,14 +21,16 @@ const ageRule = [
 
 //Main component
 function SearchCat(){
-  const [searching, setSearching] = React.useState(false)
-  const [searchComp, setSearchComp] = React.useState(false)
-  const [cats, setCat] = React.useState(null)
-  const [loading, setLoading] = React.useState(true)
-  const [input, setInput] = React.useState('text')
-  const [error, setError] = React.useState(false)
+  const [searching, setSearching] = useState(false)
+  const [cats, setCat] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [input, setInput] = useState('text')
+  const [favlist, setFavlist] = useState([])
+  const [start, setStart] = useState(true)
 
   const [form] = Form.useForm()
+
+  const user = useContext(UserContext)
 
   const change = (value) => {
     if(value==="age"){
@@ -43,71 +46,194 @@ function SearchCat(){
   
   //search cats from api database
   const search = (values) => {
-    const data = {[values.key]:values.value}
     setSearching(true)
-    setError(false)
-    fetch(`${api.uri}/pets/search`,{
+    setStart(false)
+    setLoading(true)
+    const data = {[values.key]:values.value}
+
+    const normalfetch = async() => {
+      fetch(`${api.uri}/pets/search`,{
+        method: "POST",
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(status)
+      .then(json)
+      .then(res=>{
+        setCat(res)
+        setSearching(false)
+        setLoading(false)
+      })
+    }
+
+    const loggedfetch = async() => {
+      await fetch(`${api.uri}/pets/search`,{
+        method: "POST",
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(status)
+      .then(json)
+      .then(res=>{
+        setCat(res)
+      })
+
+      await fetch(`${api.uri}/fav`,{
+        method: "GET",
+        headers: {
+          "Authorization": `Basic ${user.user.token}`
+        }
+      })
+      .then(status)
+      .then(json)
+      .then(res=>{
+        if(res.length){
+          for(let i=0;i<res.length;i++){
+            favlist.push(res[i].id)
+          }
+          setFavlist(favlist)
+          setSearching(false)
+          setLoading(false)
+        }
+      })
+    }
+    
+    if(user.user.logged){
+      loggedfetch()
+    }else{
+      normalfetch()
+    }
+    
+  }
+
+  //add fav function
+  const fav = (id: Number,catname: String) => {
+    fetch(`${api.uri}/fav/${id}`,{
       method: "POST",
       headers: {
-        "Content-Type": 'application/json'
-      },
-      body: JSON.stringify(data)
+        "Authorization": `Basic ${user.user.token}`
+      }
     })
     .then(status)
     .then(json)
     .then(res=>{
-      console.log(res)
-      setCat(res)
-      setLoading(false)
-      setSearching(false)
-      setSearchComp(true)
+      alert(`You favorited cats with name: ${catname}`)
     })
     .catch(err=>{
-      setError(true)
-      setSearching(false)
+      console.log(err)
+    })
+  }
+
+  //remove fav function
+  const rmfav = (id: Number, catname: String) => {
+    fetch(`${api.uri}/fav/${id}`,{
+      method: "DELETE",
+      headers: {
+        "Authorization": `Basic ${user.user.token}`
+      }
+    })
+    .then(status)
+    .then(json)
+    .then(res=>{
+      alert(`You remove favorited with name: ${catname}`)
+    })
+    .catch(err=>{
+      console.log(err)
     })
   }
   
   //Show cats search result
   const CatResult = () => {
-    if(searchComp){
+    if(start){
+      return(<h3>Search cats</h3>)
+    }else{
       if(loading){
         const antIcon = <LoadingOutlined style={{fontSize: 48}} spin />
         return(<Spin indicator={antIcon}/>)
       }else{
-        if(!error){
+        if(cats.length){
           return(
             <Row>
               {
                 cats&&cats.map((
-                  {id,petname,des,breed,age,gender,neutered,imageurl}
-                )=>(
-                  <Col span={8}>
-                    <Card 
-                      key={id} 
-                      cover={<img src={imageurl} alt={id}/>}
-                      style={{width: 300, color:'purple'}}
-                      hoverable>
-                      <h3>{petname}</h3>
-                      <p>{des}</p>
-                      <p>Breed: {breed}</p>
-                      <p>Age: {age}</p>
-                      {!gender&&<p>Gender: female</p>}
-                      {gender&&<p>Gender: male</p>}
-                      {!neutered&&<p>Neutered: No</p>}
-                      {neutered&&<p>Neutered: Yes</p>}
-                      <Link to={ `/cat/${id}` }>Details</Link>
-                    </Card>
-                  </Col>
-                ))
+                  {id,petname,des,breed,age,gender,neutered,imageurl,userid})=>(
+                    <Col span={8} key={`col${id}`}>
+                      <Card
+                        key={id}
+                        cover={<img src={imageurl} alt={id}/>}
+                        style={{width: 300, color:'purple'}}
+                        hoverable
+                        actions={
+                          user.user.logged&&favlist.includes(id)&&userid===user.user.id?
+                        ([<HeartFilled key="fav" onClick={()=>{rmfav(id,petname)}}/>,
+                          <Link to={`/update/${id}`}><EditOutlined key="edit"/></Link>]):
+                          user.user.logged&&!favlist.includes(id)&&userid===user.user.id?
+                        ([<HeartOutlined key="fav" onClick={()=>{fav(id,petname)}}/>,
+                          <Link to={`/update/${id}`}><EditOutlined key="edit"/></Link>]):
+                        user.user.logged&&!favlist.includes(id)?
+                        ([<HeartOutlined key="fav" onClick={()=>{fav(id,petname)}}/>]):
+                        user.user.logged&&favlist.includes(id)&&
+                        [<HeartFilled key="fav" onClick={()=>{rmfav(id,petname)}}/>]}>
+                        <h3>{petname}</h3>
+                        <p>{des}</p>
+                        <p>Breed: {breed}</p>
+                        <p>Age: {age}</p>
+                        {!gender&&<p>Gender: female</p>}
+                        {gender&&<p>Gender: male</p>}
+                        {!neutered&&<p>Neutered: No</p>}
+                        {neutered&&<p>Neutered: Yes</p>}
+                        <Link to={ `/cat/${id}` }>Details</Link>
+                      </Card>
+                    </Col>
+                  ))
               }
             </Row>
           )
-        } else {
-          return(<h1>There is no result</h1>)
-        }
+        }else{return(<h1>There is no matched cats</h1>)}
       }
     }
+    // if(searchComp){
+    //   if(loading){
+    //     const antIcon = <LoadingOutlined style={{fontSize: 48}} spin />
+    //     return(<Spin indicator={antIcon}/>)
+    //   }else{
+    //     if(!error){
+    //       return(
+    //         <Row>
+    //           {
+    //             cats&&cats.map((
+    //               {id,petname,des,breed,age,gender,neutered,imageurl}
+    //             )=>(
+    //               <Col span={8}>
+    //                 <Card 
+    //                   key={id} 
+    //                   cover={<img src={imageurl} alt={id}/>}
+    //                   style={{width: 300, color:'purple'}}
+    //                   hoverable>
+    //                   <h3>{petname}</h3>
+    //                   <p>{des}</p>
+    //                   <p>Breed: {breed}</p>
+    //                   <p>Age: {age}</p>
+    //                   {!gender&&<p>Gender: female</p>}
+    //                   {gender&&<p>Gender: male</p>}
+    //                   {!neutered&&<p>Neutered: No</p>}
+    //                   {neutered&&<p>Neutered: Yes</p>}
+    //                   <Link to={ `/cat/${id}` }>Details</Link>
+    //                 </Card>
+    //               </Col>
+    //             ))
+    //           }
+    //         </Row>
+    //       )
+    //     } else {
+    //       return(<h1>There is no result</h1>)
+    //     }
+    //   }
+    // }
   }
   //Show main component
   return(
@@ -134,7 +260,6 @@ function SearchCat(){
           input==="gender"?(
             <Form.Item name="value" label="Keywords" rules={inputRule} initialvalue={false}>
               <Select 
-                defaultValue={false}
                 options={
                 [{value: false, label: 'female'},
                 {value: true, label: 'male'}]}/>
@@ -142,7 +267,6 @@ function SearchCat(){
           input==="neutered"?(
             <Form.Item name="value" label="Keywords" rules={inputRule} initialvalue={false}>
               <Select 
-                defaultValue={false}
                 options={
                 [{value: false, label: 'No'},
                 {value: true, label: 'Yes'}]}/>
@@ -153,7 +277,7 @@ function SearchCat(){
           {searching&&<Button type="primary" htmlType="submit" disabled>Search</Button>}
         </Form.Item>
       </Form>
-      {searchComp&&<CatResult/>}
+      {!searching&&<CatResult/>}
     </main>
   )
 }
