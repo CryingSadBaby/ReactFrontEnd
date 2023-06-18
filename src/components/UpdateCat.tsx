@@ -1,6 +1,11 @@
+import UpdateCatForm from './UpdateCatForm'
+
 function UpdateCat(){
   return(
-    <h1>Update Cat</h1>
+    <main>
+      <h1>Update Cat</h1>
+      <UpdateCatForm/>
+    </main>
   )
 }
 

@@ -1,5 +1,5 @@
 //Library
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {Form,Input,Button,Select,InputNumber} from 'antd'
 
 //Local
@@ -20,43 +20,39 @@ const ageRule = [
 
 //Main component
 function PostCatForm(props){
+  const [posting, setPosting] = useState(false)
   //Get UserContext as user
   const user = useContext(UserContext)
 
   //Post cat function
   const postcat = (values) =>{
-    //ignore token in values as data
-    const {token,...data} = values
-    console.log(`JSON: ${JSON.stringify(data)}`)
+    setPosting(true)
+    console.log(`JSON: ${JSON.stringify(values)}`)
     fetch(`${api.uri}/pets`,{
       method: "POST",
       headers: {
-        "Authorization": `Basic ${values.token}`,
+        "Authorization": `Basic ${user.user.token}`,
         "Content-Type": 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(values)
     })
     .then(status)
     .then(json)
     .then(data=>{
       console.log(data)
       alert("Post success")
+      setPosting(false)
     })
     .catch(error=>{
       console.error(error)
       alert(`Error: ${error}`)
+      setPosting(false)
     })
   }
 
   //Show main component
   return(
-    <UserContext.Consumer>
-      {({user}) => (
       <Form name="postpet" scrollToFirstError onFinish={postcat}>
-        <Form.Item name="token" hidden={true} initialValue={user.token}>
-        </Form.Item>
-        <Form.Item name="userid" hidden={true} initialValue={user.id}>
-        </Form.Item>
         <Form.Item name="petname" label="Cat name" rules={inputRule}>
           <Input/>
         </Form.Item>
@@ -81,12 +77,10 @@ function PostCatForm(props){
           <Input/>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">Post</Button>
+          {!posting&&<Button type="primary" htmlType="submit">Post</Button>}
+          {posting&&<Button type="primary" htmlType="submit" disabled>Posting</Button>}
         </Form.Item>
-        
       </Form>
-      )}
-    </UserContext.Consumer>
   )
 }
 
