@@ -1,8 +1,10 @@
+//Library
 import {useContext,useEffect,useState} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import {Form, Input, InputNumber, Button, Spin, Select} from 'antd'
 import {LoadingOutlined} from '@ant-design/icons'
 
+//Local
 import UserContext from '../contexts/user'
 import {status, json} from '../resources/requestHandlers'
 import {api} from '../resources/myapi'
@@ -18,16 +20,22 @@ const ageRule = [
   {type: 'number', min: 1, max: 99}
 ]
 
+//Main component
 function UpdateCatForm(){
+  //Init react state
   const [loading, setLoading] = useState(true)
   const [cat, setCat] = useState(null)
   const [updating, setUpdating] = useState(false)
 
+  //Get id
   const id = useParams()
   
+  //get user context
   const user = useContext(UserContext)
+  //for redirect user
   const navigate = useNavigate()
 
+  //Update cat function
   const updatecat = (values) =>{
     setUpdating(true)
     console.log(`JSON: ${JSON.stringify(values)}`)
@@ -45,6 +53,7 @@ function UpdateCatForm(){
       console.log(data)
       alert("Update success")
       setUpdating(false)
+      //redirect user to home
       navigate('/')
     })
     .catch(error=>{
@@ -54,6 +63,7 @@ function UpdateCatForm(){
     })
   }
 
+  //Init cat information
   useEffect(()=>{
     fetch(`${api.uri}/pets/${id.pid}`)
     .then(status)
@@ -113,4 +123,6 @@ function UpdateCatForm(){
   }
 }
 
+
+//Export main component
 export default UpdateCatForm
